@@ -1,0 +1,220 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Маме!</title>
+    <style>
+        /* Основной фон - нежный зефирно-розовый */
+        body {
+            background-color: #cf88a0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #880e4f; /* Темно-розовый для текста */
+        }
+
+        /* Карточка в стиле "Неоморфизм" - мягкий объем */
+        .card {
+            background: #f1e2e7;
+            border-radius: 40px;
+            padding: 40px;
+            text-align: center;
+            width: 380px;
+            max-width: 90%;
+            z-index: 10;
+            /* Мягкие тени для создания объема */
+            box-shadow: 20px 20px 60px #b35777,
+                       -20px -20px 60px #ffffff;
+            position: relative;
+        }
+
+        /* Блок с фото мамы */
+        .photo-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #fce4ec;
+            overflow: hidden;
+            /* Вдавленный эффект для рамки */
+            box-shadow: inset 8px 8px 15px #d6c2c9,
+                        inset -8px -8px 15px #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mom-photo {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Новая иконка - анимированное сердце */
+        .main-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #ff80ab;
+            animation: heartBeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        /* Анимация биения сердца */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        /* Заголовки */
+        h1 {
+            font-size: 1.8em;
+            margin: 0 0 5px 0;
+            font-weight: 700;
+            color: #ad1457;
+        }
+
+        p.date {
+            color: #ec407a;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            margin-top: 0;
+        }
+
+        /* Кнопка в стиле неоморфизма */
+        button {
+            background: #fce4ec;
+            color: #ad1457;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            box-shadow: 6px 6px 12px #d6c2c9,
+                       -6px -6px 12px #ffffff;
+        }
+
+        /* Эффект нажатия - кнопка "вдавливается" */
+        button:active {
+            box-shadow: inset 4px 4px 8px #d6c2c9,
+                        inset -4px -4px 8px #ffffff;
+        }
+
+        button:hover {
+            color: #ff4081;
+        }
+
+        /* Текст пожелания */
+        .wish-box {
+            margin-top: 25px;
+            min-height: 50px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: #880e4f;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Маленькие фоновые сердечки */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 128, 171, 0.3);
+            pointer-events: none;
+            z-index: 1;
+ animation: floatHeart linear infinite;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        
+        <div class="photo-container">
+            <div class="photo-frame">
+                <img src="photo_2026-03-08_18-00-31.jpg" alt="Мама" class="mom-photo" onerror="this.src='https://via.placeholder.com/150/f8bbd0/880e4f?text=МАМА'">
+            </div>
+        </div>
+
+        <div class="main-icon">❤️</div>
+        <h1>С праздником!</h1>
+        <p class="date">8 Марта</p>
+        
+        <button onclick="revealWish()">нажимай</button>
+        
+        <div class="wish-box" id="wishDisplay"></div>
+    </div>
+
+    <script>
+        const wishes = [
+            "Ты самая лучшая мама в мире! 💖",
+            "Спасибо за твою бесконечную нежность! ✨",
+            "Пусть твои глаза всегда сияют от счастья! 🌺",
+            "Желаю здоровья, моря улыбок и весеннего настроения! 🌷",
+            " Люблю тебя! ❤️",
+            "Пусть каждый день дарит тебе только радость! 🎁",
+            "Оставайся всегда такой же красивой и доброй! 🎉"
+        ];
+
+        function revealWish() {
+            const display = document.getElementById('wishDisplay');
+            display.style.opacity = 0;
+            
+            setTimeout(() => {
+                const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+                display.innerText = randomWish;
+                display.style.opacity = 1;
+            }, 300);
+        }
+
+        // Создание фоновых летающих сердечек
+        function initBackground() {
+            const count = 15; // Количество сердечек
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.innerText = '❤️';
+                
+                // Случайный размер, положение и скорость
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                
+                heart.style.animationDuration = Math.random() * 6 + 4 + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                
+                document.body.appendChild(heart);
+            }
+        }
+
+        window.onload = initBackground;
+    </script>
+</body>
+</html>
